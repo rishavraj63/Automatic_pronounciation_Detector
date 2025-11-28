@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Dashboard — PronounceAI</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-dark">
+
+  <!-- background animations -->
+  <div class="bg-animated dashboard-bg"></div>
+  <div class="particles" id="particles"></div>
+
+  <!-- Floating mic FAB -->
+  <button id="fabMic" class="fab-mic" title="Quick Record">
+    <i class="fas fa-microphone"></i>
+    <span class="fab-wave"></span>
+  </button>
+
+  <!-- Top navbar -->
+  <header class="topbar glass-card">
+    <div class="left">
+      <div class="logo">
+        <i class="fas fa-bolt"></i>
+        <span>PronounceAI</span>
+      </div>
+      <button id="sidebarToggle" class="icon-btn"><i class="fas fa-bars"></i></button>
+    </div>
+
+    <div class="right">
+      <button id="themeToggle" class="icon-btn" title="Toggle theme"><i class="fas fa-moon"></i></button>
+      <div class="profile">
+        <img src="https://i.pravatar.cc/40?img=12" alt="Profile"/>
+        <div class="profile-name">Sonal</div>
+      </div>
+      <button id="logoutBtn" class="btn small ghost">Logout</button>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar glass-card">
+    <nav>
+      <ul>
+        <li class="active"><i class="fas fa-chart-line"></i><span>Dashboard</span></li>
+        <li><i class="fas fa-microphone"></i><span>Start Practice</span></li>
+        <li><i class="fas fa-file-alt"></i><span>Reports</span></li>
+        <li><i class="fas fa-book"></i><span>Word Library</span></li>
+        <li><i class="fas fa-sun"></i><span>Daily Challenge</span></li>
+        <li><i class="fas fa-user"></i><span>Profile</span></li>
+        <li><i class="fas fa-cog"></i><span>Settings</span></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main-content">
+    <section class="top-cards">
+      <div class="card big glass neon" id="card-record">
+        <div class="card-head">
+          <h3>Start Recording</h3>
+          <div class="card-actions">
+            <button id="startRec" class="btn small"><i class="fas fa-microphone"></i> Record</button>
+          </div>
+        </div>
+        <div class="rec-visual">
+          <div id="equalizer" class="equalizer">
+            <!-- bars generated in JS -->
+          </div>
+          <div class="rec-info">
+            <div class="accuracy-meter" id="accuracyMeter">
+              <!-- circular svg -->
+              <svg viewBox="0 0 36 36" class="circular-chart">
+                <path class="circle-bg" d="M18 2.0845
+                    a 15.9155 15.9155 0 0 1 0 31.831
+                    a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                <path id="meterArc" class="circle" stroke-dasharray="78,100" d="M18 2.0845
+                    a 15.9155 15.9155 0 0 1 0 31.831
+                    a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                <text x="18" y="20.35" class="percentage" id="meterText">78%</text>
+              </svg>
+            </div>
+
+            <div class="voice-to-text glass small" id="v2t">
+              <div class="v2t-header"><i class="fas fa-comments"></i> Live Text</div>
+              <div class="v2t-body" id="v2tBody">Your speech will appear here…</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card glass neon" id="card-accuracy">
+        <div class="card-head">
+          <h4>Accuracy Score</h4>
+          <i class="fas fa-percentage"></i>
+        </div>
+        <div class="card-body">
+          <div class="big-score">
+            <div id="scoreNum">78</div><span>%</span>
+          </div>
+          <div class="mini-text muted">Average pronunciation accuracy</div>
+        </div>
+      </div>
+
+      <div class="card glass neon" id="card-week">
+        <div class="card-head">
+          <h4>Weekly Progress</h4>
+          <i class="fas fa-chart-area"></i>
+        </div>
+        <div class="card-body">
+          <canvas id="weeklyChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="lower-cards">
+      <div class="card glass neon" id="card-heatmap">
+        <div class="card-head"><h4>Mistake Heatmap</h4><i class="fas fa-fire"></i></div>
+        <div class="card-body heatmap">
+          <!-- 4x6 grid -->
+          <div class="heat-grid" id="heatGrid"></div>
+        </div>
+      </div>
+
+      <div class="card glass neon" id="card-vocab">
+        <div class="card-head"><h4>Vocabulary Practice</h4><i class="fas fa-book-open"></i></div>
+        <div class="card-body vocab">
+          <div class="word-module">
+            <div class="word-title">Word: <strong id="wordText">cater</strong> <span class="tag">Medium</span></div>
+            <div class="meanings">
+              <div><strong>EN:</strong> to provide food and service</div>
+              <div><strong>HI:</strong> भोजन और सेवा प्रदान करना</div>
+            </div>
+            <div class="example">Example: <em>They cater to small events.</em></div>
+            <div class="word-actions">
+              <button class="btn small ghost" id="playCorrect"><i class="fas fa-volume-up"></i> Play</button>
+              <button class="btn small" id="recordCompare"><i class="fas fa-microphone"></i> Record & Compare</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card glass neon" id="card-compare">
+        <div class="card-head"><h4>Compare Waveforms</h4><i class="fas fa-wave-square"></i></div>
+        <div class="card-body compare">
+          <canvas id="compareChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="extras">
+      <div class="card glass neon small-card" id="card-daily">
+        <div class="card-head"><h4>Daily Challenge</h4></div>
+        <div class="card-body">
+          <div class="word-of-day">
+            <div class="word">Phoneme: <strong>θ (th)</strong></div>
+            <div class="challenge-score">Accuracy: <span id="dailyScore">64%</span></div>
+            <div class="challenge-actions">
+              <button class="btn small" id="tryDaily">Try Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card glass neon small-card" id="card-badges">
+        <div class="card-head"><h4>Achievements</h4></div>
+        <div class="card-body badges">
+          <div class="badge"><i class="fas fa-star"></i><div>Perfect Pronouncer</div></div>
+          <div class="badge locked"><i class="fas fa-burn"></i><div>Streak Master</div></div>
+          <div class="badge"><i class="fas fa-trophy"></i><div>Accuracy Master</div></div>
+        </div>
+      </div>
+
+      <div class="card glass neon small-card" id="card-notifs">
+        <div class="card-head"><h4>Notifications</h4></div>
+        <div class="card-body">
+          <div id="toasts"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Animated loader overlay (used for recording etc.) -->
+  <div id="animLoader" class="overlay hidden">
+    <div class="loader-card glass-card">
+      <div class="neon-mic large pulse">
+        <i class="fas fa-microphone"></i>
+      </div>
+      <p id="loaderText">Recording…</p>
+    </div>
+  </div>
+
+  <script defer src="script.js"></script>
+
+</body>
+</html>
