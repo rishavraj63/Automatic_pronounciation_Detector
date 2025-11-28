@@ -1,29 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Pronunciation Detector</title>
-    <link rel="stylesheet" href="project.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — PronounceAI</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
+<body class="theme-dark">
 
-<body>
+<div class="bg-animated"></div>
 
-    <div class="login-container">
-        <div class="login-card">
-            <h2>🔊 Pronunciation Detector</h2>
+<main class="center-wrap">
+  <div class="glass-card login-card">
 
-            <form id="loginForm">
-                <input type="text" id="username" placeholder="Enter Username" required>
-                <input type="password" id="password" placeholder="Enter Password" required>
-
-                <button type="submit" class="login-btn">Login</button>
-            </form>
-
-            <p id="error-msg"></p>
-        </div>
+    <div class="mic-wrap">
+      <div class="neon-mic"><i class="fas fa-microphone"></i></div>
     </div>
 
-    <script src="project.js"></script>
+    <h2>PronounceAI</h2>
+    <p class="muted">Automatic Pronunciation Mistake Detector</p>
+
+    <!-- FIXED FORM -->
+    <form id="loginForm">
+
+      <div class="input-group">
+        <i class="fas fa-user icon"></i>
+        <input id="username" type="text" placeholder="Username" required />
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-lock icon"></i>
+        <input id="password" type="password" placeholder="Password" required />
+        <i id="togglePw" class="fas fa-eye toggle-pw"></i>
+      </div>
+
+      <button id="loginBtn" type="submit" class="btn neon-btn">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </button>
+      
+    </form>
+
+    <!-- MUST be outside form -->
+    <div id="errorMsg" class="error hidden">Invalid username or password</div>
+
+    <p class="small muted">Use: <b>sonal / 1234</b></p>
+
+  </div>
+</main>
+
+<!-- Loader -->
+<div id="loaderOverlay" class="overlay hidden ">
+  <div class="loader-card glass-card">
+    <div class="neon-mic large"><i class="fas fa-microphone"></i></div>
+    <p>Authenticating...</p>
+  </div>
+</div>
+
+<script defer src="script.js"></script>
+
 </body>
 </html>
